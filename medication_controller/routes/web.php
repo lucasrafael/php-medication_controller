@@ -2,6 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\MedicamentoController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\MarcaController;
+use App\Http\Controllers\UsuarioController;
+
+use App\Http\Middleware\CheckURL;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,9 +19,26 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
+
+Route::resource('medicamentos', MedicamentoController::class)->middleware(CheckURL::class);
+Route::resource('categorias', CategoriaController::class)->middleware(CheckURL::class);
+Route::resource('marcas', MarcaController::class)->middleware(CheckURL::class);
+
+Route::get('/usuario/create', [UsuarioController::class, 'create'])->name('usuario.create');
+Route::get('/usuario/login', [UsuarioController::class, 'login'])->name('usuario.login');
+Route::get('/usuario/logout', [UsuarioController::class, 'logout'])->name('usuario.logout');
+Route::post('/usuario/logar', [UsuarioController::class, 'logar'])->name('usuario.logar');
+Route::post('/usuario/store', [UsuarioController::class, 'store'])->name('usuario.store');
+
+Route::get('/marcas/medicamentos/{id}', [MarcaController::class, 'medicamentos'])->name('marcas.medicamentos');
+Route::get('/marcas/remove/{id}', [MarcaController::class, 'remover'])->name('marcas.remove');
+
+Route::get('/medicamentos/remove/{id}', [MedicamentoController::class, 'remover'])->name('medicamentos.remove');
+
+Route::get('/categorias/remove/{id}', [CategoriaController::class, 'remover'])->name('categorias.remove');
+Route::get('/categorias/medicamentos/{id}', [CategoriaController::class, 'medicamentos'])->name('categorias.medicamentos');
 
 Route::get('/', function () {
-
-    return view('welcome');
-
-});
+    return redirect()->route('medicamentos.index');
+})->name('controller.index');

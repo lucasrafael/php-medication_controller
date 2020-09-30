@@ -18,7 +18,14 @@ RUN apt-get update && apt-get install -y \
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
+# PHP Extensions for Laravel 8.x (PHP >= 7.3) 
+#
+# - PDO PHP Extension
+# - Mbstring PHP Extension 
+# - OpenSSL PHP Extension
+# - Tokenizer PHP Extension
+# - XML PHP Extension
+#
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Get latest Composer
