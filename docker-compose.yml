@@ -1,0 +1,36 @@
+
+# https://docs.docker.com/compose/compose-file/compose-versioning/
+version: "3.7"
+services:
+    app:
+        build:
+            args:
+                user: usuario
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        image: medication_controller
+        container_name: medication_controller-app
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./medication_controller:/var/www
+        networks:
+            - medication_controller
+
+    nginx:
+        image: nginx:alpine
+        container_name: medication_controller-nginx
+        restart: unless-stopped
+        ports:
+            - "8080:80"
+        volumes:
+            - ./medication_controller:/var/www
+            - ./docker-compose-nginx:/etc/nginx/conf.d
+        networks:
+            - medication_controller
+
+networks:
+    medication_controller:
+        driver: bridge
+
