@@ -19,12 +19,8 @@ use App\Http\Middleware\CheckURL;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes();
 
-Route::resource('medicamentos', MedicamentoController::class)->middleware(CheckURL::class);
-Route::resource('categorias', CategoriaController::class)->middleware(CheckURL::class);
-Route::resource('marcas', MarcaController::class)->middleware(CheckURL::class);
-
+// Rotas abertas...
 Route::get('/usuario/create', [UsuarioController::class, 'create'])->name('usuario.create');
 Route::get('/usuario/login', [UsuarioController::class, 'login'])->name('usuario.login');
 Route::get('/usuario/logout', [UsuarioController::class, 'logout'])->name('usuario.logout');
@@ -42,3 +38,8 @@ Route::get('/categorias/medicamentos/{id}', [CategoriaController::class, 'medica
 Route::get('/', function () {
     return redirect()->route('medicamentos.index');
 })->name('controller.index');
+
+// CRUD dos recursos abaixo tem as rotas para "insert", "update" e "delete" bloqueadas em caso de não haver sessão ativa.
+Route::resource('medicamentos', MedicamentoController::class)->middleware(CheckURL::class);
+Route::resource('categorias', CategoriaController::class)->middleware(CheckURL::class);
+Route::resource('marcas', MarcaController::class)->middleware(CheckURL::class);
