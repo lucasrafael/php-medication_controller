@@ -4,6 +4,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Class CriarTabelaMarcas
+ * @author lucasrafael
+ */
 class CriarTabelaMarcas extends Migration
 {
     /**
@@ -14,10 +18,13 @@ class CriarTabelaMarcas extends Migration
     public function up()
     {
         // Marcas { id, nome }
-        Schema::create('marcas', function(Blueprint $table) {
+        Schema::create('marcas', function (Blueprint $table) {
             $table->increments('id')->nullable(false);
             $table->string('nome', 30)->unique()->nullable(false);
+
             $table->timestamps();
+
+            $table->index('nome');
         });
     }
 

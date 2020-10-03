@@ -4,6 +4,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Class CriarTabelaUsuarios
+ * @author lucasrafael
+ */
 class CriarTabelaUsuarios extends Migration
 {
     /**
@@ -19,7 +23,11 @@ class CriarTabelaUsuarios extends Migration
             $table->string('login')->nullable(false)->unique();
             $table->string('email')->nullable(false)->unique();
             $table->string('password')->nullable(false);
+
             $table->timestamps();
+
+            $table->index('login');
+            $table->index('email');
         });
     }
 
