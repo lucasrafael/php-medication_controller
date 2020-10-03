@@ -1,7 +1,7 @@
-@extends('layouts.base')
+@extends('marcas.default')
 
 @section('panel-heading')
-    Remover a Marca
+    Remo&ccedil;&atilde;o da marca
 @endsection
 
 @section('content')
@@ -13,7 +13,8 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h4>Deseja realmente remover a marca?</h4>
+                    <h4>Deseja realmente remover esta marca?</h4>
+
                     <hr>
 
                     <p>Identificador: {{$marca->id}}</p>

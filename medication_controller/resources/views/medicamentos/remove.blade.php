@@ -1,17 +1,20 @@
-@extends('layouts.base')
+@extends('medicamentos.default')
 
 @section('panel-heading')
-    Remover o Medicamento
+    Remo&ccedil;&atilde;o do medicamento
 @endsection
 
 @section('content')
     <div class="panel-body">
         <form method="post" action="{{route ('medicamentos.destroy', $medicamento->id)}}">
         <input type="hidden" name="_method" value="DELETE">
+
         {{ csrf_field() }}
+
             <div class="row">
                 <div class="col-md-12">
-                    <h4>Deseja realmente remover o medicamento?</h4>
+                    <h4>Deseja realmente remover este medicamento?</h4>
+
                     <hr>
 
                     <p>Identificador: {{$medicamento->id}}</p>

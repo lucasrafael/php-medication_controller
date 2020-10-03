@@ -1,7 +1,7 @@
-@extends('layouts.base')
+@extends('categorias.default')
 
 @section('panel-heading')
-    Medicamentos da categoria
+    Listagem de medicamentos por categoria
 @endsection
 
 @section('panel-button')
@@ -12,18 +12,21 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-bordered">
+                <h4>Categoria: <strong>{{ $categoria->nome }}</strong></h4>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>Ver informações</th>
+                            <th class="column-order-color text-center">Nome <i class="fa fa-caret-down"></i></th>
+                            <th>Ver informa&ccedil;&otilde;es</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($categoria->medicamentos as $medicamento)
                             <tr>
                                 <td>{{$medicamento->nome}}</td>
-                                <td><a href="{{route('medicamentos.show', $medicamento->id)}}">Visualizar Medicamento</a></td>
+                                <td><a href="{{route('medicamentos.show', $medicamento->id)}}">Visualizar medicamento</a></td>
                             </tr>
                         @endforeach
                     </tbody>

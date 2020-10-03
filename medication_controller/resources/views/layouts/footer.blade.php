@@ -1,2 +1,2 @@
 <hr>
-<p class="text-right">&copy;2020</p>
+<p class="text-right">&copy; LA 2020</p>

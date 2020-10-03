@@ -12,8 +12,8 @@
             @include('layouts.msg')
 
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3>@yield('panel-heading')</h3>
+                <div class="panel-heading img-responsive">
+                    <h3><span class="@yield('panel-heading-class')"></span>@yield('panel-heading')</h3>
                 </div>
                 @yield('content')
             </div>

@@ -1,26 +1,33 @@
-@extends('layouts.base')
+@extends('marcas.default')
 
 @section('panel-heading')
-    Altere a marca
+    Altera&ccedil;&atilde;o de marca
 @endsection
 
 @section('content')
     <div class="panel-body">
-        <form method="post" action="{{route ('marcas.update', $marca->id)}}">
-        <input type="hidden" name="_method" value="PUT">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h4>Dados da empresa</h4>
 
-            {{ csrf_field() }}
+                <hr>
 
-            <h4>Dados da Marca</h4>
-            <hr>
+                <form method="post" action="{{route ('marcas.update', $marca->id)}}">
+                    <input type="hidden" name="_method" value="PUT">
 
-            <div class="form-group">
-                <label for="descricao">Nome</label>
-                <input type="text" class="form-control" placeholder="Nome" name="nome" required value="{{$marca->nome}}">
+                    {{ csrf_field() }}
+
+                    <div class="form-group">
+                        <label for="nome"><span class="text-danger">*</span>Nome</label>
+                        <input type="text" class="form-control" placeholder="Nome" name="nome" required value="{{$marca->nome}}">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" @guest disabled @endguest>Editar</button>
+                    <a href="{{ url()->previous() }}" class="btn btn-default">Voltar</a>
+
+                </form>
+
             </div>
-
-            <a href="{{ url()->previous() }}" class="btn btn-default">Voltar</a>
-            <button type="submit" class="btn btn-primary" @guest disabled @endguest>Editar</button>
-        </form>
+        </div>
     </div>
 @endsection

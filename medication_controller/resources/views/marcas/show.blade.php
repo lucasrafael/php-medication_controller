@@ -1,7 +1,7 @@
-@extends('layouts.base')
+@extends('marcas.default')
 
 @section('panel-heading')
-    Detalhes da Marca
+    Detalhes de marca
 @endsection
 
 @section('panel-button')
@@ -12,8 +12,8 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-12">
-                <p>Identificador: {{$marca->id}}</p>
-                <p>Nome: {{$marca->nome}}</p>
+                <p><b>Identificador:</b> {{$marca->id}}</p>
+                <p><b>Nome:</b> {{$marca->nome}}</p>
             </div>
         </div>
     </div>

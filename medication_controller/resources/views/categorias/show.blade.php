@@ -1,7 +1,7 @@
-@extends('layouts.base')
+@extends('categorias.default')
 
 @section('panel-heading')
-    Detalhes da Categoria
+    Detalhes de categoria
 @endsection
 
 @section('panel-button')
@@ -12,10 +12,9 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-12">
-                <p>Identificador: {{$categoria->id}}</p>
-                <p>Nome: {{$categoria->nome}}</p>
+                <p><b>Identificador:</b> {{$categoria->id}}</p>
+                <p><b>Nome:</b> {{$categoria->nome}}</p>
             </div>
         </div>
     </div>
-
 @endsection

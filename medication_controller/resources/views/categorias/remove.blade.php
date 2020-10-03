@@ -1,7 +1,7 @@
-@extends('layouts.base')
+@extends('categorias.default')
 
 @section('panel-heading')
-    Remover a categoria
+    Remo&ccedil;&atilde;o da categoria
 @endsection
 
 @section('content')
@@ -13,7 +13,8 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h4>Deseja realmente remover a categoria?</h4>
+                    <h4>Deseja realmente remover esta categoria?</h4>
+
                     <hr>
 
                     <p>Identificador: {{$categoria->id}}</p>
