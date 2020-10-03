@@ -44,7 +44,7 @@ class Controller extends BaseController
     }
 
     /**
-     * Retorna o "RedirectResponse" com os devidos erros...
+     * Retorna o "RedirectResponse" com os devidos erros.
      * @param Throwable $e
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -56,7 +56,7 @@ class Controller extends BaseController
 
             // Se houver um 'referer' e o conteúdo (end.) for o mesmo do end. atual,
             // não tem como redirecionar para a página anterior; isto, pois ficará em "loop"...
-            if (!$referer || ($referer && $referer == url()->current())) {
+            if (!$referer || $referer == url()->current()) {
 
                 $code = $obj->getCode();
                 $message = $obj->getMessage();
