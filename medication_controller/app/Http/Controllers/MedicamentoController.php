@@ -8,40 +8,55 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Validator;
 
+use App\Models\Util\OrmUtil;
+
 use App\Models\Medicamento;
 use App\Models\Marca;
 use App\Models\Categoria;
 
+use App\Http\Util\DateUtil;
+
+/**
+ * Class MedicamentoController
+ * @package App\Http\Controllers
+ * @author lucasrafael
+ */
 class MedicamentoController extends Controller
 {
+    /**
+     * Validar os dados informados no "request".
+     * @param $request
+     * @return \Illuminate\Contracts\Validation\Validator
+     * @throws \Exception
+     */
     protected function validarMedicamento($request)
     {
-        $validatedData = Validator::make($request->all(), [
-            "nome" => "required | max:50",
-            "descricao" => "required | max:200",
-            "validade" => "required",
-            "quantidade" => "required | numeric | min:1",
+        $request['validade'] = DateUtil::transformEurDateFormatToIso($request['validade']);
+        $validate = Validator::make($request->all(), [
+            "nome" => "required|max:50",
+            "descricao" => "required|max:100",
+            "prescricao" => "max:200",
+            "validade" => "required|date",
+            "quantidade" => "required|numeric|between:1,999",
             "marca_id" => "required",
         ]);
-        return $validatedData;
+        return $validate;
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the resource (Medicamentos).
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
-        $medicamentos = self::getModelPaginado($request, 'nome', Medicamento::class);
-
+        $medicamentos = self::getListaPaginada($request, 'nome', Medicamento::class, 'validade');
         return view('medicamentos.index', compact('medicamentos'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show the form for creating a new resource (Medicamento).
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -52,50 +67,45 @@ class MedicamentoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * Store a newly created resource in storage (Medicamento).
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function store(Request $request)
     {
         $validator = $this->validarMedicamento($request);
         if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator->errors());
+            return self::getRedirectMedicamentoWithErrors($request, $validator->errors());
         }
-
-        return self::execTrans(function () use ($request){
+        return OrmUtil::execTrans(function () use ($request) {
             $dados = $request->all();
 
             $medicamento = Medicamento::create($dados);
-            $medicamento = Medicamento::find($medicamento->id);
             $medicamento->categorias()->attach($dados['categoria_id']);
 
-        },'Medicamento inserido', 'medicamentos.index');
+        }, 'Medicamento inserido', 'medicamentos.index');
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * Display the specified resource (Medicamento).
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($id)
     {
-        $medicamento = Medicamento::find($id);
-
+        $medicamento = Medicamento::findOrFail($id);
         return view('medicamentos.show', compact('medicamento'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * Show the form for editing the specified resource (Medicamento).
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id)
     {
-        $medicamento = Medicamento::find($id);
+        $medicamento = Medicamento::getByIdWithOtherDateFmt($id);
         $marcas = Marca::all();
         $categorias = Categoria::all();
 
@@ -103,47 +113,62 @@ class MedicamentoController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * Update the specified resource in storage (Medicamento).
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function update(Request $request, $id)
     {
         $validator = $this->validarMedicamento($request);
         if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator->errors());
+            return self::getRedirectMedicamentoWithErrors($request, $validator->errors());
         }
+        return OrmUtil::execTrans(function () use ($request, $id) {
+            $medicamento = Medicamento::getByIdWithOtherDateFmt($id);
 
-        return self::execTrans(function () use ($request, $id){
-            $medicamento = Medicamento::find($id);
             $dados = $request->all();
 
             $medicamento->update($dados);
-
             $medicamento->categorias()->sync($dados['categoria_id']);
 
-        },'Medicamento alterado', 'medicamentos.index');
+        }, 'Medicamento alterado', 'medicamentos.index');
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * Remove the specified resource from storage (Medicamento).
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        return self::execTrans(function () use ($id){
-            Medicamento::find($id)->delete();
-        },'Medicamento excluído', 'medicamentos.index');
+        return OrmUtil::execTrans(function () use ($id) {
+            Medicamento::findOrFail($id)->delete();
+        }, 'Medicamento excluído', 'medicamentos.index');
     }
 
+    /**
+     * Exibe tela para remover medicamento.
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function remover($id)
     {
-        $medicamento = Medicamento::find($id);
-
+        $medicamento = Medicamento::findOrFail($id);
         return view('medicamentos.remove', compact('medicamento'));
     }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    private function getRedirectMedicamentoWithErrors(Request $request, $obj)
+    {
+        // Revertendo a data...
+        $request['validade'] = DateUtil::transformIsoDateFormatToEur($request['validade']);
+
+        return parent::getRedirectResponseWithErrors($obj);
+    }
+
 }

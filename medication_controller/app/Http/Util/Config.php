@@ -2,6 +2,11 @@
 
 namespace App\Http\Util;
 
+/**
+ * Class Config
+ * @package App\Http\Util
+ * @author lucasrafael
+ */
 class Config
 {
     /**
