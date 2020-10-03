@@ -1,3 +1,8 @@
+
+# exclude IntelliJ’s project (JetBrains) specific settings file
+/.idea/
+
+# exclude others...
 /node_modules
 /public/hot
 /public/storage
