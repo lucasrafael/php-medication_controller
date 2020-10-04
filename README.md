@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Controle de Medicamentos
 
 Sistema *WEB* básico de controle de medicamentos desenvolvido em *PHP* com o *Framework Laravel 8.6*.
@@ -83,8 +82,3 @@ docker-compose exec app php artisan optimize
 ```sh
 docker-compose exec app php artisan db:seed
 ```
-
-=======
-# php-medication_controller
-Sistema WEB básico de controle de medicamentos desenvolvido em PHP com o framework Laravel 8.6
->>>>>>> 5432c6df9fc3ec3b61f1824d18610c2638d182cd
