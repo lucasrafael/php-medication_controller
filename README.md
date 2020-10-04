@@ -52,7 +52,7 @@ O projeto foi desenvolvido sob o *Docker* (arquivo de configuração *Dockerfile
 
 Para a base de dados foi utilizado o **SQLite**. Portanto, para a sua ativação, bastou comentar todas as linhas que iniciam com **DB\_**, no arquivo **_.env_** que se encontra na raiz do projeto, exceto **DB_CONNECTION**, onde o valor desta foi substituído por **sqlite**.
 
-#### Versões das tecnologias utilizadas 
+#### Tecnologias utilizadas 
 
 - **Docker** (Versão *19.03.8*);
 - **Docker Compose** (Orquestrador de contêineres - versão *1.25.0*);
