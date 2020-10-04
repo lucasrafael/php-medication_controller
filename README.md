@@ -66,19 +66,39 @@ Para a base de dados foi utilizado o **SQLite**. Portanto, para a sua ativação
 
 ### Resumo para preparação de ambiente de execução
 
-Após as instalações dos gerenciadores de contêineres, da configuração da base, faz-se necessário execução de alguns comandos do utilitário *Artisan* do *Laravel*:
+Após as instalações dos gerenciadores de contêineres e criação das imagens, faz-se necessário execução dos comandos seguintes no diretório *"medication_controller"*.
 
-1. Preparar toda a estrutura da base de dados: 
+1. Criar arquivo de configuração a partir do exemplo e depois realizar as modificações já supracitadas:
+```sh
+cp .env-example .env
+```
+
+2. Criação do arquivo *SQLite* referente à base de dados:
+```sh
+touch database/database.sqlite
+```
+
+3. Baixar as dependências necessárias por meio do *composer*:
+```sh
+docker-compose exec app composer update
+```
+
+4. Gerar chave encriptada da aplicação:
+```sh
+docker-compose exec app php artisan key:generate
+```
+
+5. Preparar toda a estrutura da base de dados: 
 ```sh
 docker-compose exec app php artisan migrate:refresh
 ```
 
-2. Realizar limpeza dos *caches* do *Laravel* *(Configuration cache, Route cache, Compiled views, Blade templates)*: 
-```sh
-docker-compose exec app php artisan optimize
-```
-
-3. **(Opcional)** Alimentar o banco com alguns dados de teste iniciais:
+6. **(Opcional)** Alimentar o banco com alguns dados de teste iniciais:
 ```sh
 docker-compose exec app php artisan db:seed
+```
+
+7. **(Opcional)** Limpeza dos *caches* do *Laravel* *(Configuration cache, Route cache, Compiled views, Blade templates)*: 
+```sh
+docker-compose exec app php artisan optimize
 ```
