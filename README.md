@@ -1,4 +1,4 @@
-# Controle de Medicamentos
+# Controle de Medicamentos [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lucasrafael_php-medication_controller&metric=alert_status)](https://sonarcloud.io/dashboard?id=lucasrafael_php-medication_controller)
 
 Sistema *WEB* básico de controle de medicamentos desenvolvido em *PHP* com o *Framework Laravel 8.6*.
 
